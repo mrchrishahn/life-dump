@@ -7,13 +7,20 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "bun test"
+    "test": "bun test",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:push": "drizzle-kit push:sqlite",
+    "db:seed": "bun run src/db/seed.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.3",
+    "better-sqlite3": "^9.4.1",
+    "drizzle-orm": "^0.29.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.9",
+    "drizzle-kit": "^0.20.14",
     "typescript": "^5.3.3",
     "bun-types": "latest"
   }
