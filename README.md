@@ -13,16 +13,19 @@ A TypeScript monorepo for personal life management with AI-powered insights.
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 bun install
 ```
 
 2. Build all packages:
+
 ```bash
 bun run build
 ```
 
 3. Start development mode:
+
 ```bash
 bun run dev
 ```
@@ -30,6 +33,7 @@ bun run dev
 ## Development
 
 Each package follows a similar structure:
+
 - `src/types.ts`: Type definitions and MCP configuration
 - `src/index.ts`: Main implementation
 - `package.json`: Package configuration
@@ -38,6 +42,7 @@ Each package follows a similar structure:
 ### MCP (Machine Control Program)
 
 Each app defines an MCP that specifies:
+
 - Triggers: Events that activate the MCP
 - Actions: Available actions the AI can take
 - Conditions: Rules for when actions should be taken
@@ -66,4 +71,4 @@ OPENAI_API_KEY=your_api_key_here
 
 ## License
 
-Private - All rights reserved 
+Private - All rights reserved
