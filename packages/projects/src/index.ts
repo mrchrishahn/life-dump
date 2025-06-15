@@ -1,8 +1,9 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { db } from "./db";
 import { projects, tasks } from "./db/schema";
 import { eq, and, gte, lte } from "drizzle-orm";
+import { fa } from "zod/v4/locales";
 
 export const ProjectsServer = new McpServer({
   name: "projects",
@@ -18,7 +19,7 @@ ProjectsServer.tool(
   "Create a new project",
   {
     name: z.string(),
-    description: z.string(),
+    description: z.string().describe("The description of the project"),
   },
   async (params) => {
     const { name, description } = params;
@@ -27,7 +28,7 @@ ProjectsServer.tool(
       .values({ id: crypto.randomUUID(), name, description })
       .returning();
     return {
-      content: [{ type: "text", text: `Project ${name} created successfully` }],
+      content: [{ type: "text", text: `Project ${name} created successfully with id ${project[0].id}` }],
     };
   }
 );
@@ -36,19 +37,19 @@ ProjectsServer.tool(
   "createTask",
   "Create a new task for a specific project",
   {
-    projectName: z.string(),
+    projectId: z.string(),
     title: z.string(),
     description: z.string().optional(),
     dueDate: z.string().optional(),
   },
   async (params) => {
-    const { projectName, title, description, dueDate } = params;
+    const { projectId, title, description, dueDate } = params;
     const project = await db.query.projects.findFirst({
-      where: eq(projects.name, projectName),
+      where: eq(projects.id, projectId),
     });
     if (!project) {
       return {
-        content: [{ type: "text", text: `Project ${projectName} not found` }],
+        content: [{ type: "text", text: `Project with id ${projectId} not found` }],
       };
     }
     const task = await db
@@ -65,7 +66,7 @@ ProjectsServer.tool(
       content: [
         {
           type: "text",
-          text: `Task ${title} created successfully in Project ${project.name}`,
+          text: `Task ${title} (${task[0].id}) created successfully in Project ${project.name} (${project.id})`,
         },
       ],
     };
@@ -112,106 +113,6 @@ ProjectsServer.tool(
         {
           type: "text",
           text: `Project ${name} created successfully with ${tasksParams.length} tasks`,
-        },
-      ],
-    };
-  }
-);
-
-ProjectsServer.resource("projects", "projects://all", async (url: URL) => {
-  const allProjects = db.select().from(projects).all();
-  return {
-    contents: [
-      {
-        type: "text",
-        uri: url.toString(),
-        text: `
-        All Projects:
-        ${allProjects
-          .map((project) =>
-            [
-              `Project ID: ${project.id}`,
-              `Project: ${project.name}`,
-              `Description: ${project.description}`,
-              `Status: ${project.status}`,
-              `Created: ${project.createdAt}`,
-              `Updated: ${project.updatedAt}`,
-              "---",
-            ].join("\n")
-          )
-          .join("\n")}`,
-      },
-    ],
-  };
-});
-
-ProjectsServer.tool(
-  "getProjectTasks",
-  "Get all tasks for a specific project",
-  {
-    projectId: z.string(),
-  },
-  async (params) => {
-    const { projectId } = params;
-    const projectTasks = db
-      .select()
-      .from(tasks)
-      .where(eq(tasks.projectId, projectId))
-      .all();
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Tasks for Project ${projectId}:
-      ${projectTasks
-        .map((task) =>
-          [
-            `Task ID: ${task.id}`,
-            `Task: ${task.title}`,
-            `Description: ${task.description}`,
-            `Due Date: ${task.dueDate}`,
-            "---",
-          ].join("\n")
-        )
-        .join("\n")}`,
-        },
-      ],
-    };
-  }
-);
-
-ProjectsServer.tool(
-  "getTasksDueInPeriod",
-  "Get tasks due within a specified time period",
-  {
-    startDate: z.string(),
-    endDate: z.string(),
-  },
-  async (params) => {
-    const { startDate, endDate } = params;
-    const tasksInPeriod = db
-      .select()
-      .from(tasks)
-      .where(and(gte(tasks.dueDate, startDate), lte(tasks.dueDate, endDate)))
-      .innerJoin(projects, eq(tasks.projectId, projects.id))
-      .all();
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Tasks due between ${startDate} and ${endDate}:
-          ${tasksInPeriod
-            .map((task) =>
-              [
-                `Task ID: ${task.tasks.id}`,
-                `Task: ${task.tasks.title}`,
-                `Description: ${task.tasks.description}`,
-                `Project: ${task.projects.name}`,
-                `Due Date: ${task.tasks.dueDate}`,
-                "---",
-              ].join("\n")
-            )
-            .join("\n")}`,
         },
       ],
     };

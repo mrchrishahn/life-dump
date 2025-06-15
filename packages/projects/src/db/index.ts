@@ -1,9 +1,9 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { Database } from 'bun:sqlite';
 import * as schema from './schema';
 
-const sqlite = new Database('projects.db');
+const sqlite = new Database(process.env.DB_FILE_NAME!);
 export const db = drizzle(sqlite, { schema });
 
 // Enable foreign keys
-sqlite.pragma('foreign_keys = ON'); 
+sqlite.run('PRAGMA foreign_keys = ON'); 
