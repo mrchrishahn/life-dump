@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "life-dump",
+      "dependencies": {
+        "zod": "^3.25.64",
+      },
       "devDependencies": {
         "@biomejs/biome": "1.5.3",
         "typescript": "^5.3.3",
@@ -29,6 +32,7 @@
         "bun-types": "latest",
         "drizzle-orm": "latest",
         "sqlite3": "latest",
+        "zod": "latest",
       },
     },
     "packages/projects": {
