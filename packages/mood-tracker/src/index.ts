@@ -1,7 +1,10 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { logMood, getMoods, initializeDatabase } from './db';
-import { log } from './utils/logger';
+import { log, clearLogs } from './utils/logger';
+
+// Clear logs on startup
+clearLogs();
 
 // Initialize the database when the server starts
 initializeDatabase();

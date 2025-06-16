@@ -6,9 +6,8 @@
     "dev": "bun run index.ts",
     "build": "bun build index.ts --outdir build --target node",
     "reset-db": "rm -f mood-tracker.db && echo 'Database reset successfully'",
-    "mcp-inspector": "bunx @modelcontextprotocol/inspector bun run index.ts -e DB_FILE_NAME=$DB_FILE_NAME",
-    "logs": "cat mood-tracker.log || echo 'No logs found'",
-    "watch-logs": "tail -f mood-tracker.log || echo 'No logs found'"
+    "mcp-inspector": "bunx @modelcontextprotocol/inspector bun run index.ts -e DB_FILE_NAME=$DB_FILE_NAME -e LOG_FILE_PATH=$LOG_FILE_PATH",
+    "watch-logs": "LOG_PATH=${LOG_FILE_PATH} && tail -f $LOG_PATH"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.3",
