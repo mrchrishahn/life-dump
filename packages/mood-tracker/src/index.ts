@@ -1,6 +1,9 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { logMood, getMoods } from './db';
+import { logMood, getMoods, initializeDatabase } from './db';
+
+// Initialize the database when the server starts
+initializeDatabase();
 
 export const MoodTrackerServer = new McpServer({
   name: 'mood-tracker',
@@ -38,8 +41,10 @@ MoodTrackerServer.tool(
   'Retrieve all logged moods',
   {},
   async () => {
+    console.log('getMoods');
     try {
       const moods = await getMoods();
+      console.log('moods', moods);
       
       // Convert moods to a formatted text representation
       const moodList = moods.map(mood => 
