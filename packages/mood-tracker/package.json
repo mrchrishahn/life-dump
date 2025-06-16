@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun run index.ts",
-    "build": "bun build index.ts --outdir build --target node"
+    "build": "bun build index.ts --outdir build --target node",
+    "reset-db": "rm -f mood-tracker.db && echo 'Database reset successfully'"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.3",

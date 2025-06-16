@@ -1,0 +1,14 @@
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Build output
+dist/
+build/
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+*.log 
