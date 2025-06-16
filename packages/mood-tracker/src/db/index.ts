@@ -1,10 +1,12 @@
 import { drizzle } from 'drizzle-orm/bun-sqlite';
 import { Database } from 'bun:sqlite';
 import * as schema from './schema';
-import { getPackagePath } from '../utils/paths';
 
 function setupDatabaseConnection() {
-  const dbPath = getPackagePath('mood-tracker.db');
+  const dbPath = process.env.DB_FILE_NAME;
+  if (!dbPath) {
+    throw new Error('DB_FILE_NAME environment variable is not set');
+  }
   console.log('Setting up database at:', dbPath);
   return { db: new Database(dbPath), dbPath };
 }
