@@ -30,8 +30,7 @@
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.12.3",
         "bun-types": "latest",
-        "drizzle-orm": "^0.44.2",
-        "sqlite3": "latest",
+        "drizzle-orm": "latest",
         "zod": "latest",
       },
     },
