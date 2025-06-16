@@ -1,6 +1,6 @@
 import { appendFileSync, writeFileSync } from 'fs';
 
-const LOG_FILE = process.env.LOG_FILE_PATH || 'mood-tracker.log';
+const LOG_FILE = process.env.LOG_FILE || 'mood-tracker.log';
 
 export function clearLogs() {
   try {

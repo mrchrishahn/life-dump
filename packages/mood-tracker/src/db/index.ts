@@ -4,9 +4,9 @@ import * as schema from './schema';
 import { log } from '../utils/logger';
 
 function setupDatabaseConnection() {
-  const dbPath = process.env.DB_FILE_NAME;
+  const dbPath = process.env.DB_FILE;
   if (!dbPath) {
-    throw new Error('DB_FILE_NAME environment variable is not set');
+    throw new Error('DB_FILE environment variable is not set');
   }
   log(`Setting up database at: ${dbPath}`);
   return { db: new Database(dbPath), dbPath };
