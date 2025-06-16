@@ -3,21 +3,15 @@ import { Database } from 'bun:sqlite';
 import * as schema from './schema';
 import { getPackagePath } from '../utils/paths';
 
-/**
- * Sets up the database connection
- * @returns The SQLite database connection and path
- */
 function setupDatabaseConnection() {
   const dbPath = getPackagePath('mood-tracker.db');
   console.log('Setting up database at:', dbPath);
   return { db: new Database(dbPath), dbPath };
 }
 
-// Setup the database connection
 const { db, dbPath } = setupDatabaseConnection();
 export const drizzleDb = drizzle(db, { schema });
 
-// Initialize the database with the required tables
 export function initializeDatabase() {
   try {
     // Create the moods table if it doesn't exist
