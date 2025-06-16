@@ -1,8 +1,11 @@
 import { drizzle } from 'drizzle-orm/bun-sqlite';
 import { Database } from 'bun:sqlite';
 import * as schema from './schema';
+import { getPackagePath } from '../utils/paths';
 
-const db = new Database('/Users/venhaus/code/aether/life-dump/packages/mood-tracker/mood-tracker.db');
+// Use the utility function to get the database path
+const dbPath = getPackagePath('mood-tracker.db');
+const db = new Database(dbPath);
 export const drizzleDb = drizzle(db, { schema });
 
 // Initialize the database with the required tables
